@@ -18,10 +18,9 @@ select, instructions, options, high scores, the pause menu, and the cheat code.
 
 1. **Fonts.** The original drew its text from PNG glyph sheets and relied on the phone's system fonts. Both are
    replaced with free (SIL Open Font License 1.1) TrueType fonts, bundled in `app/src/main/assets/fonts/`:
-   *Pixeloid Sans* replaces the 13 px pixel sheet, *Liberation Sans* (Regular/Bold/Italic) replaces the 16 px
-   MS-Sans-Serif sheet. `TrueTypeFont` picks a `textSize` whose `ascent + descent` equals the old glyph-box
-   height, so nothing on screen shifts by a pixel. Those two sheets are the only two asset files the
-   port does not carry over: every other image and every sound under `assets/` is byte-identical to the jar's.
+   *Pixeloid Sans* replaces the 13 px pixel sheet, *Liberation Sans* (Regular) replaces the 16 px MS-Sans-Serif
+   sheet. `TrueTypeFont` picks a `textSize` whose `ascent + descent` equals the old glyph-box height, so nothing
+   on screen shifts by a pixel.
 2. **Splash damage is decoupled from the refresh rate.** The game advances on a fixed **50 ms** tick
    (`Screen.TICK = 50`, 20 steps/second) and explosion/splash damage is applied once per tick, never once per
    rendered frame. That is exactly what the original phone did by default — its loop slept between ticks and
