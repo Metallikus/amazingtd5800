@@ -1,0 +1,31 @@
+# Gradle / AGP build output — regenerate with ./gradlew assembleDebug
+.gradle/
+build/
+app/build/
+captures/
+.kotlin/
+.externalNativeBuild/
+.cxx/
+
+# Android Studio / IntelliJ local state (recreated on open, machine-specific)
+.idea/
+*.iml
+
+# Machine-specific SDK location (sdk.dir)
+local.properties
+
+# Built artefacts that land outside build/ when AGP is asked to output them there
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*.log
+hs_err_pid*.log
+
+# Keep: gradle/wrapper/ (jar + properties), app/src/main/assets (fonts, images, sounds),
+# icon/ (launcher icon SVG sources).
