@@ -7,12 +7,22 @@ there is no way left to play it.
 
 The port is a line-of-logic port of the original jar (decompiled with CFR), class by class. There are no
 per-screen Activities and no XML layouts: one `Activity` hosts one `Screen`, a `View` that draws in the
-original **360×640** design space (the 5800 XpressMusic's portrait screen) and scales it to the device, mapping touches back
-through the same scale. Every ported class keeps an `Original: <obfuscated name>` tag in its Javadoc, so any
-line here can be traced back to the decompiled source.
+original **360×640** design space (the 5800 XpressMusic's portrait screen) and scales it to the device, mapping
+touches back through the same scale. Every ported class keeps an `Original: <obfuscated name>` tag in its Javadoc,
+so any line here can be traced back to the decompiled source.
 
 Everything the original had is here: **19 levels**, **11 towers**, **39 enemy types**, the main menu, level
 select, instructions, options, high scores, the pause menu, and the cheat code.
+
+## Screenshots
+
+Cropped to the original 360×640 design space at 2×, which is what the `Screen` view draws before scaling it to
+the device.
+
+| | |
+|:--:|:--:|
+| <img src="screens/screen01.jpg" width="180" alt="screen01"> | <img src="screens/screen02.jpg" width="180" alt="screen02"> |
+| <img src="screens/screen03.jpg" width="180" alt="screen03"> | <img src="screens/screen04.jpg" width="180" alt="screen04"> |
 
 ## What differs from the original
 
@@ -95,9 +105,23 @@ shown in-game on the **About** screen:
 | Testing and balancing original game | Zuul, XRC Kingkoning |
 | Level design | level 15 — jinsk8er · level 16 — XRC Kingkoning · level 17 — Zuul |
 
-The sprites, enemy sheets, backgrounds and sounds under `app/src/main/assets/` came out of the jar exactly as
-they were, unmodified; the port claims no authorship over them. The only assets the port swaps in are the two
-fonts, both free and both shipped with their licence — *Pixeloid Sans* (GGBotNet) and *Liberation Sans* (Red
-Hat), each under the SIL Open Font License 1.1; see the `License.txt`/`LICENSE.txt` next to each font. The
-original shipped no licence files for its art or audio (it was a hobby freeware game that used the phone's
-built-in system fonts as-is), so this port ships none either.
+The sprites, enemy sheets, backgrounds and sounds under `app/src/main/assets/` came out of the jar exactly as they
+were, unmodified; the port claims no authorship over them. The only assets the port swaps in are the two fonts.
+
+## License
+
+Four sets of terms sit inside this repository. `LICENSE` is MIT and covers the Java sources only — it grants
+nothing over the game itself; everything else is spelled out in [`LICENSES.md`](LICENSES.md).
+
+| What | Terms |
+|------|-------|
+| `app/src/main/java/**` (this port's code) | MIT — `LICENSE` |
+| `app/src/main/assets/sounds/*.wav` | CC BY 3.0 — FxHome (site offline), authors credited above, files unmodified |
+| `app/src/main/assets/fonts/**` | SIL OFL 1.1 — shipped with each font's own `License.txt`/`COPYRIGHT.txt` |
+| `app/src/main/assets/images/**` — all of it drawn by Zuul for the original | all rights reserved; no licence was granted for any of it |
+| The original game's code and the level layouts of 15–17 | their own authors'; no licence was granted |
+| The title "Amazing TD" | no one's — a title shared with several unrelated games, used here only to name the work being ported |
+
+The original shipped no licence files at all, so for its art there is nothing to reproduce: it is carried along,
+credited under the handles the original's own credits use, and would be removed or replaced on request. If you
+hold a right named anywhere in [`LICENSES.md`](LICENSES.md), write to **metalarchus@gmail.com**.

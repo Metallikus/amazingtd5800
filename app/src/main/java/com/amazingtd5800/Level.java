@@ -135,15 +135,16 @@ abstract class Level implements Enemy.EnemyListener {
 
     /**
      * 33 points of a radius-60 arc centred on the field's axis; of the original's seven arguments only the span in
-     * degrees (the step is a third of it out of 32) and the Y-axis centre survive.
+     * degrees (the step is a third of it out of 32) and the Y-axis centre survive. Level 5, the only level that
+     * calls this, is one of the two that leave their waypoints off the grid, so nothing here snaps.
      * Original: ca.a(dd, n2, n3, n4, n5, n6, n7).
      */
     static void arc(Path path, int spanDegrees, int centerY) {
         double step = spanDegrees / 32.0 * Math.PI / 180.0;
         double angle = 0.0;
         for (int i = 0; i < 33; i++) {
-            path.add(new Vec2(snap(180 + (int) (Math.sin(angle) * 60.0 + 0.5)),
-                    snap(centerY - (int) (Math.cos(angle) * 60.0 + 0.5))));
+            path.add(new Vec2(180 + (int) (Math.sin(angle) * 60.0 + 0.5),
+                    centerY - (int) (Math.cos(angle) * 60.0 + 0.5)));
             angle += step;
         }
     }
@@ -159,9 +160,22 @@ abstract class Level implements Enemy.EnemyListener {
         return wave.timer() + wave.total();
     }
 
-    /** A path point of the level. Original: ca.b(dd). */
+    /**
+     * A path of the level; {@link #snapPoints(Path)} gets it before the road is drawn, as the original hands it to
+     * its own hook there. Original: ca.b(dd).
+     */
     protected final void addPath(Path path) {
         paths.add(path);
+    }
+
+    /**
+     * What the road does to a path before it draws it: put the waypoints on the 8-pixel grid. Levels 5 and 10
+     * override this with the original's empty body, because an arc point and a spiral point that lose their last
+     * 3 pixels to the grid stop being a curve at all. Called every frame, like the original, and idempotent.
+     * Original: ca.a(dd).
+     */
+    protected void snapPoints(Path path) {
+        path.snapToGrid();
     }
 
     /** One game step: waves, enemies, towers, projectiles and texts. Original: ca.b(long). */
@@ -320,7 +334,9 @@ abstract class Level implements Enemy.EnemyListener {
             sprite.setColor(android.graphics.Color.WHITE);
         }
         for (int i = 0; i < paths.size(); i++) {
-            paths.get(i).draw(canvas, settings.roadColor(), settings.pathAccent(i), settings.arrowColor(i));
+            Path path = paths.get(i);
+            snapPoints(path);
+            path.draw(canvas, settings.roadColor(), settings.pathAccent(i), settings.arrowColor(i));
         }
     }
 

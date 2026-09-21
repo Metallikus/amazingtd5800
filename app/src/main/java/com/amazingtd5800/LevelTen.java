@@ -7,15 +7,16 @@ final class LevelTen extends Level {
 
     LevelTen(Hud hud, int number) {
         super(hud, number, 3);
-        // Path from entry point 0, 92 waypoints. Original: dd.
+        // Path from entry point 0, 92 waypoints, off the 8-pixel grid: this level overrides snapPoints with the
+        // original's empty hook, so the spiral keeps the points its generator made. Original: dd.
         Path path0 = new Path(92);
         addPath(path0);
-        path0.add(new Vec2(snap(0), snap(100)));
+        path0.add(new Vec2(0, 100));
         // 91 spiral points, radius 180 minus 2 per step, angle step 0.21331801968819583 radians. Original: qn.
         double angle = 0.0;
         for (int i = 0, radius = 180; i < 91; i++) {
-            path0.add(new Vec2(snap(170 + (int) (Math.sin(angle) * radius + 0.5)),
-                    snap(280 - (int) (Math.cos(angle) * radius + 0.5))));
+            path0.add(new Vec2(170 + (int) (Math.sin(angle) * radius + 0.5),
+                    280 - (int) (Math.cos(angle) * radius + 0.5)));
             angle += 0.21331801968819583;
             radius -= 2;
         }
@@ -218,5 +219,10 @@ final class LevelTen extends Level {
             }
         });
         hud.start(250, waves());
+    }
+
+    /** The original's empty hook: the spiral points above stay exactly as the generator made them. Original: qn.a(dd). */
+    @Override
+    protected void snapPoints(Path path) {
     }
 }

@@ -5,12 +5,13 @@ import android.graphics.Paint;
 
 /**
  * A level path: its waypoints, the road 18 wide (inner layer 16) and the direction arrows along the axis.
- * Waypoints snap to the 8-pixel grid, and the entry point is where the first segment crosses the field edge.
+ * Waypoints are left exactly as the level made them — only the levels that call {@link #snapToGrid()} land on the
+ * 8-pixel grid — and the entry point is where the first segment crosses the field edge.
  * Original: dd.
  */
 final class Path {
 
-    /** A path coordinate rounded to the nearest multiple of 8. Original: dd.a(int). */
+    /** A path coordinate rounded to the nearest multiple of 8. Original: ca.a(int). */
     static int snap(int coordinate) {
         int remainder = coordinate % 8;
         if (remainder > 4) {
@@ -35,6 +36,19 @@ final class Path {
     /** Adds a waypoint. Original: dd.a(ri). */
     void add(Vec2 point) {
         points[count++] = point;
+    }
+
+    /**
+     * Rounds every waypoint and snaps it to the 8-pixel grid, in place, the way the level base class does before it
+     * draws a path. Levels 5 and 10 override that hook with the original's empty body, so their arc and spiral keep
+     * the exact points the generator produced and only the levels that do call this ever land on the grid.
+     * Original: ca.a(dd), which rounds with (int)(v + 0.5f) and then calls ca.a(int) per coordinate.
+     */
+    void snapToGrid() {
+        for (int i = 0; i < count; i++) {
+            points[i].x = snap((int) (points[i].x + 0.5f));
+            points[i].y = snap((int) (points[i].y + 0.5f));
+        }
     }
 
     /** The waypoint at an index. Original: dd.a(int). */
@@ -87,8 +101,8 @@ final class Path {
     /**
      * The road is a wide layer in the road colour (cj.c) and a narrow one in the path colour. The strip is a
      * quadrilateral of two triangles; half the width is taken perpendicular to the segment rounded away from
-     * zero, so the strip stays centred on the segment and its edge comes out equal on both sides. An arc's
-     * rectangle is like fillArc(x, y, w, h): right and bottom edges one pixel short of x + w and y + h.
+     * zero, so the strip stays centred on the segment and its edge comes out equal on both sides. A waypoint's
+     * disc fills the whole fillArc(x, y, w, h) box, so its right and bottom edges sit on x + w and y + h.
      * Original: ca.a(Graphics, dd, int, int), f.a(Graphics, int, int, int, int, int).
      */
     void draw(Canvas canvas, int road, int inner, int arrows) {
@@ -100,7 +114,7 @@ final class Path {
                 Vec2 to = points[i];
                 int left = (int) to.x - width / 2 + layer;
                 int top = (int) to.y - width / 2 + layer;
-                canvas.drawArc(left, top, left + size - 1, top + size - 1, 0, 360, true, paint);
+                canvas.drawArc(left, top, left + size, top + size, 0, 360, true, paint);
                 band(canvas, paint, from, to, size);
             }
         }

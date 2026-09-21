@@ -7,15 +7,16 @@ final class LevelFive extends Level {
 
     LevelFive(Hud hud, int number) {
         super(hud, number, 5);
-        // Path from entry point 0, 68 waypoints. Original: dd.
+        // Path from entry point 0, 68 waypoints, off the 8-pixel grid: this level overrides snapPoints with the
+        // original's empty hook, so the two radius-60 arcs keep the points their generator made. Original: dd.
         Path path0 = new Path(68);
         addPath(path0);
-        path0.add(new Vec2(snap(180), snap(0)));
+        path0.add(new Vec2(180, 0));
         // Arc of radius 60 centred on the field axis. Original: ca.a(dd, n2, n3, n4, n5, n6, n7).
         arc(path0, 540, 220);
         // Arc of radius 60 centred on the field axis. Original: ca.a(dd, n2, n3, n4, n5, n6, n7).
         arc(path0, -540, 390);
-        path0.add(new Vec2(snap(180), snap(GameScreen.HEIGHT - 58)));
+        path0.add(new Vec2(180, GameScreen.HEIGHT - 58));
         // 12 enemies every 800 ms, the first after 30000 ms. Original: jy.
         addWave(new Wave(30000, 12, 800) {
             @Override
@@ -175,5 +176,10 @@ final class LevelFive extends Level {
             }
         });
         hud.start(140, waves());
+    }
+
+    /** The original's empty hook: the arc points above stay exactly as the generator made them. Original: fz.a(dd). */
+    @Override
+    protected void snapPoints(Path path) {
     }
 }

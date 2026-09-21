@@ -1,0 +1,35 @@
+MIT License
+
+Copyright (c) 2026 Pavel Chalov (this Android port)
+
+Copyright (c) 2010 the authors of the original Symbian/J2ME game that this port reproduces — see LICENSES.md
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sub-license, and/or sell copies of the Software, and
+to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of
+the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+IN THE SOFTWARE.
+
+SCOPE OF THIS LICENSE
+
+This license covers the Java sources of this Android port -- the code that is the port author's own work. It does
+NOT grant any rights over:
+
+  * the original 2010 Symbian/J2ME game that this port reproduces: its code, its levels and its design, which
+    belong to their own authors (see LICENSES.md);
+  * the title "Amazing TD" -- a title shared with several unrelated games, not the property of any of them, and
+    used here only to name the work being ported. This port claims no mark in it and no affiliation with, or
+    endorsement by, anyone else;
+  * the art and audio under app/src/main/assets/ -- see LICENSES.md for who owns what and under what terms each
+    part is carried along.
+
+Nothing above is claimed as the port author's. To assert a right over anything this port carries, or to ask for it
+to be credited differently, replaced or removed, write to metalarchus@gmail.com.
