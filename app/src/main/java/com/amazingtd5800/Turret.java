@@ -185,10 +185,20 @@ abstract class Turret {
     }
 
     /** Charges the upgrade price and raises price, level and sprite frame. Original: dq.a(j). */
-    protected void paid(Hud hud, float factor) {
+    protected void paid(Hud hud, double factor) {
+        paid(hud, factor, 0);
+    }
+
+    /**
+     * Same, with the flat addition the Tracking Laser adds after multiplying (only {@code nu} does:
+     * {@code k = (int) (k * 1.3) + 1}). The multiplier is a double because every tower multiplies in double —
+     * {@code (int) ((double) this.k * 1.2)} — and a float 1.2f would round a different way (Money Tower 20 -&gt; 23,
+     * not 24). Original: dq.a(j), nu.a(j).
+     */
+    protected void paid(Hud hud, double factor, int add) {
         hud.spend(upgradePrice);
         price += upgradePrice;
-        upgradePrice = (int) (upgradePrice * factor);
+        upgradePrice = (int) ((double) upgradePrice * factor) + add;
         levelUp();
     }
 

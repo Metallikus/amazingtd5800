@@ -202,11 +202,15 @@ final class Enemy {
             travel -= elapsed;
         }
         sprite.setRefPixelPosition((int) position.x, (int) position.y);
+        // w.b(long): p = (int)(p + l2); if (p >= 50) { advance p/50 frames; p = 0; } — the remainder is dropped, not
+        // kept, so an enemy that ticks 20 ms at a time advances a frame every full 50 ms and loses the rest.
         frameDelay += elapsed;
-        for (int i = 0; i < frameDelay / 50; i++) {
-            sprite.nextFrame();
+        if (frameDelay >= 50) {
+            for (int i = 0; i < frameDelay / 50; i++) {
+                sprite.nextFrame();
+            }
+            frameDelay = 0;
         }
-        frameDelay %= 50;
     }
 
     /** Damage taken; armour absorbs 40% when the damage type matches the armour. Original: w.d(int, int). */
@@ -290,25 +294,35 @@ final class Enemy {
             sprite.paint(canvas);
         }
         if (shieldActive() && visible) {
-            // J2ME drawArc has no useCenter: this is always the outline of a circle around the enemy.
+            // J2ME drawArc has no useCenter and its box ends at x + w - 1, y + h - 1, so the ring of e + 4 pixels
+            // ends at x - half + size + 1. It is always an outline, never a fill.
             paint.setColor(Rgb.color(0xFFFF00));
             paint.setStyle(Paint.Style.STROKE);
-            canvas.drawArc(position.x - half - 2, position.y - half - 2, position.x + half + 2,
-                    position.y + half + 2, 0, 360, false, paint);
+            canvas.drawArc(position.x - half - 2, position.y - half - 2, position.x - half + size + 1,
+                    position.y - half + size + 1, 0, 360, false, paint);
             paint.setStyle(Paint.Style.FILL);
         }
+        // drawRect(e, 3) is the box (the two fills below cover its whole interior), fillRect(x+1+filled, y+1,
+        // e-1-filled, 2) the health that is gone and fillRect(x+1, y+1, filled, 2) what is left. J2ME
+        // drawRect/fillRect cover x..x+w-1 and y..y+h-1 and draw nothing at all when w is 0 (w.a(Graphics)).
         int left = barLeft();
         int top = barTop();
         int filled = Math.max(0, (int) ((size - 1) * ((float) health / maxHealth) + 0.5f));
-        paint.setColor(Rgb.color(0x666666));
-        canvas.drawRect(left, top, left + size, top + 3, paint);
-        paint.setColor(Rgb.color(0));
-        canvas.drawRect(left + 1 + filled, top + 1, left + size, top + 3, paint);
-        paint.setColor(color);
-        canvas.drawRect(left + 1, top + 1, left + 1 + filled, top + 3, paint);
+        fill(canvas, Rgb.color(0x666666), left, top, size, 3);
+        fill(canvas, Rgb.color(0), left + 1 + filled, top + 1, size - 1 - filled, 2);
+        fill(canvas, color, left + 1, top + 1, filled, 2);
         for (Effect effect : effects) {
             effect.draw(canvas);
         }
+    }
+
+    /** A J2ME rect: it covers x..x+w-1 and y..y+h-1, and a width of 0 draws nothing at all. */
+    private void fill(Canvas canvas, int color, float left, float top, int width, int height) {
+        if (width <= 0) {
+            return;
+        }
+        paint.setColor(color);
+        canvas.drawRect(left, top, left + width - 1, top + height - 1, paint);
     }
 
     /** Where the enemy is — towers aim here. Original: w.a(). */

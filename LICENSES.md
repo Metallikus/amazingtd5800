@@ -6,17 +6,17 @@ of the tree is actually under. The original game shipped no licence files at all
 Nothing here is legal advice, and nothing here claims a right the port does not have.
 
 **If you hold a right listed below and want it handled differently, write to metalarchus@gmail.com** — this is a
-non-commercial fan port, and anything it carries will be credited as you ask, replaced, or taken out.
+non-commercial preservation project, and anything it carries will be credited as you ask, replaced, or taken out.
 
 ## The game itself
 
 | What | Whose | Terms |
 |------|-------|-------|
-| The original game's code — the classes this port re-expresses line by line | Johan Krüger (2010) | No licence was granted |
+| The original game's code | Johan Krüger (2010) | Carried along as a non-commercial preservation project |
 | The level layouts hard-coded in `Level*.java`: 15, 16, 17 | jinsk8er, XRC Kingkoning, Zuul | No licence was granted |
 | The title "Amazing TD" | no one's | A title, not a mark |
 
-All of it is carried along as a fan port, credited in the in-game About screen under the handles the original's
+All of it is carried along as a preservation port, credited in the in-game About screen under the handles the original's
 own credits use, and would be removed or replaced on request.
 
 The title is the odd one out and is deliberately not claimed as anyone's property: several unrelated games are
@@ -52,7 +52,7 @@ were taken from **FxHome** (`fxhome.com/sounds`, now offline) and are used under
 ## Fonts — SIL Open Font License 1.1
 
 Both fonts the app actually loads are under OFL 1.1, which requires the licence text and the copyright notice to
-travel with the font. They do, side by side in the same directory, so nothing else is needed here:
+travel with the font. They do, side by side in the same directory:
 
 | Shipped | Author / notice | Replaces |
 |---------|-----------------|----------|

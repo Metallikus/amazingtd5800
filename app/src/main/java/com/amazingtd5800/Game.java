@@ -139,7 +139,10 @@ public final class Game {
         return version;
     }
 
-    /** Vibration pulse, unless the setting switched it off. Original: be.q(). */
+    /**
+     * Vibration pulse of 200 ms, unless the setting switches it off. The original's 20 ms can't be felt on Android,
+     * so this one is longer on purpose. Original: be.q().
+     */
     public void vibrate() {
         if (settings.vibrationEnabled()) {
             vibrate(200);

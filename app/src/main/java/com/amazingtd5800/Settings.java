@@ -58,12 +58,12 @@ public final class Settings {
     }
 
     /**
-     * Switching difficulty deletes the previous difficulty's file entirely, as the original did
-     * (RecordStore.deleteRecordStore before reopening), then re-reads the new one.
-     * Original: cd.b().
+     * Switching difficulty saves the new difficulty and re-reads that difficulty's level list. The other
+     * difficulties' files are left untouched, so switching back shows the progress made on them; only
+     * "Clear scores" deletes a store.
+     * Original: ca.a(int) then be.n() -> cd.d() (write ATDsettings) and cd.a() (reopen and read).
      */
     public final void setDifficulty(int difficulty) {
-        levelStore().delete();
         this.difficulty = difficulty;
         save();
         loadLevels();

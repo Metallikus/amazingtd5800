@@ -103,7 +103,7 @@ final class Poison extends TimedEffect {
     public void draw(Canvas canvas) {
         if (enemy != null && !enemy.isDying()) {
             paint.setColor(Rgb.color(0xFF0000));
-            canvas.drawRect(enemy.barLeft() + 4, enemy.barTop() - 4, enemy.barLeft() + 7, enemy.barTop() - 1,
+            canvas.drawRect(enemy.barLeft() + 4, enemy.barTop() - 4, enemy.barLeft() + 6, enemy.barTop() - 2,
                     paint);
         }
     }
@@ -140,7 +140,7 @@ final class Slowing extends TimedEffect {
     public void draw(Canvas canvas) {
         if (enemy != null && !enemy.isDying()) {
             paint.setColor(Rgb.color(3725311));
-            canvas.drawRect(enemy.barLeft(), enemy.barTop() - 4, enemy.barLeft() + 3, enemy.barTop() - 1, paint);
+            canvas.drawRect(enemy.barLeft(), enemy.barTop() - 4, enemy.barLeft() + 2, enemy.barTop() - 2, paint);
         }
     }
 }
@@ -183,7 +183,7 @@ final class Money extends TimedEffect {
     public void draw(Canvas canvas) {
         if (enemy != null && !enemy.isDying()) {
             paint.setColor(Rgb.color(0xFFFF00));
-            canvas.drawRect(enemy.barLeft() + 8, enemy.barTop() - 4, enemy.barLeft() + 11, enemy.barTop() - 1,
+            canvas.drawRect(enemy.barLeft() + 8, enemy.barTop() - 4, enemy.barLeft() + 10, enemy.barTop() - 2,
                     paint);
         }
     }
@@ -291,7 +291,7 @@ final class Heal extends TimedEffect {
     public void draw(Canvas canvas) {
         if (enemy != null && !enemy.isDying() && tick < 100) {
             paint.setColor(Rgb.color(0x00FF00));
-            canvas.drawRect(enemy.barLeft(), enemy.barTop(), enemy.barLeft() + enemy.size(), enemy.barTop() + 3,
+            canvas.drawRect(enemy.barLeft(), enemy.barTop(), enemy.barLeft() + enemy.size() - 1, enemy.barTop() + 2,
                     paint);
         }
     }
@@ -326,7 +326,7 @@ final class Stun extends TimedEffect {
     public void draw(Canvas canvas) {
         if (enemy != null && !enemy.isDying()) {
             paint.setColor(Rgb.color(0xFF44F8));
-            canvas.drawRect(enemy.barLeft() + 12, enemy.barTop() - 4, enemy.barLeft() + 15, enemy.barTop() - 1,
+            canvas.drawRect(enemy.barLeft() + 12, enemy.barTop() - 4, enemy.barLeft() + 14, enemy.barTop() - 2,
                     paint);
         }
     }

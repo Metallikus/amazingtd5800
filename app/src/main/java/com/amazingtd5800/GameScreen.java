@@ -27,7 +27,10 @@ public final class GameScreen extends Screen {
     private static final float[] SPEED = {0.9f, 1.0f, 1.2f};
     /** The shop panel (cs.h) is painted 0x888888, not the difficulty colour. Original: cs.c(), cs (constructor). */
     private static final int SHOP_PANEL = Color.rgb(0x88, 0x88, 0x88);
-    /** Towers in the button row: the same names and the same order as in di. Original: db. */
+    /**
+     * The towers by index: the names and the order of the instruction pages (page 1..11), which is also the order of
+     * the tower sheets in Assets. The shop row is a different order — see TowerShop.SHOP. Original: di.a() case 1..11.
+     */
     private static final String[] NAMES = {"Autobow", "Slow Tower", "Mortar", "Chaingun", "Force Field Tower",
             "Pulsed Laser", "Detector", "Money Tower", "Sniper Tower", "Tracking Laser", "Missile Tower"};
 
@@ -191,9 +194,12 @@ public final class GameScreen extends Screen {
         return px >= x && py >= y && px <= x + width && py <= y + height;
     }
 
-    /** A finger on a button creates the tower 14 pixels above the finger and carries it. Original: cs.e(), cs.b(cs, dq). */
-    private void carry(int index, float x, float y) {
-        Turret tower = tower(index, new Vec2(x, y - 14));
+    /**
+     * A finger on a button creates the tower 14 pixels above the finger and carries it. The argument is the tower
+     * index (a shop slot is mapped to it by {@code TowerShop.SHOP}), not the slot. Original: cs.e(), cs.b(cs, dq).
+     */
+    private void carry(int towerIndex, float x, float y) {
+        Turret tower = tower(towerIndex, new Vec2(x, y - 14));
         tower.setRangeVisible(true);
         level.place(tower, true);
         carried = tower;
@@ -450,6 +456,13 @@ public final class GameScreen extends Screen {
         /** Button x = 2, 52, 102, 152, 202, 252: a 50 step with 48-wide plates. Original: cs.e(). */
         private static final int CELL = 50;
         private static final int ROW = 28;
+        /**
+         * Shop slot → tower index. The button row is not the instruction pages' order: cs.e() installs j[7..9] =
+         * oc (Money), pa (Sniper), nx (Detector) at x = 2, 52, 102, while di (the instructions) lists nx, oc, pa as
+         * its pages 7..9. Slots 0..5 and 9..10 are the same in both, so only the middle three swap.
+         * Original: cs.e() (j[1..11] = jo, fi, fc, fb, ki, u, oc, pa, nx, nu, kn) vs di.a() case 1..11.
+         */
+        private static final int[] SHOP = {0, 1, 2, 3, 4, 5, 7, 8, 6, 9, 10};
         /** A button's tower price; ad.a_(money) uses it to decide whether the button is crossed out in red. Original: ad.a(). */
         private final int[] price = new int[NAMES.length];
         /** The plate under the finger is the pressed one (hy.h swaps highlight and shadow). Original: nv.a_, nv.c. */
@@ -461,7 +474,7 @@ public final class GameScreen extends Screen {
             super(GameScreen.this, 2, HEIGHT - 2 * ROW - 2, WIDTH - 4, 2 * ROW);
             paint.setAntiAlias(false);
             for (int i = 0; i < price.length; i++) {
-                price[i] = tower(i, new Vec2(0, 0)).price();
+                price[i] = tower(SHOP[i], new Vec2(0, 0)).price();
             }
         }
 
@@ -470,14 +483,14 @@ public final class GameScreen extends Screen {
             Settings settings = game().settings();
             for (int i = 0; i < NAMES.length; i++) {
                                 // A hidden button is not drawn at all (if (!this.b) return). Original: hy.a(Graphics).
-                if (!unlocked(i)) {
+                if (!unlocked(SHOP[i])) {
                     continue;
                 }
                 boolean paid = paid(i);
                 plate(canvas, paid ? settings.buttonColor() : settings.disabledColor(), left(i), top(i), TILE,
                         pressX >= left(i) && pressX >= top(i) && pressX <= left(i) + TILE && pressY <= top(i) + ROW);
                                 // super.a(graphics): the plate first, then the tower icon at its centre (anchor 3). Original: y.a(Graphics).
-                drawBitmap(canvas, Assets.get().tower(i), left(i) + TILE / 2, top(i) + ROW / 2,
+                drawBitmap(canvas, Assets.get().tower(SHOP[i]), left(i) + TILE / 2, top(i) + ROW / 2,
                         Anchor.HCENTER | Anchor.VCENTER);
                                 // if (!this.a) — the button is crossed out with a red cross. Original: hy.b.
                 if (!paid) {
@@ -546,7 +559,7 @@ public final class GameScreen extends Screen {
                 }
             }
             if (carried == null) {
-                carry(index, px, py);
+                carry(SHOP[index], px, py);
             }
         }
 
@@ -573,7 +586,7 @@ public final class GameScreen extends Screen {
             pressX = -1;
             int index = indexAt(px, py);
             if (index >= 0) {
-                showDialog(new ShopPanel(tower(index, new Vec2(px, py)), axis(index), (int) py));
+                showDialog(new ShopPanel(tower(SHOP[index], new Vec2(px, py)), axis(index), (int) py));
             }
             drop(px, py);
         }
@@ -590,7 +603,7 @@ public final class GameScreen extends Screen {
          */
         private int indexAt(float px, float py) {
             for (int i = 0; i < NAMES.length; i++) {
-                if (unlocked(i) && px >= left(i) && px <= left(i) + TILE && py >= top(i) && py <= top(i) + ROW) {
+                if (unlocked(SHOP[i]) && px >= left(i) && px <= left(i) + TILE && py >= top(i) && py <= top(i) + ROW) {
                     return i;
                 }
             }
@@ -612,7 +625,8 @@ public final class GameScreen extends Screen {
             return index < 6 ? y + ROW : y;
         }
 
-        /** These two towers are hidden (j[10].b(false), j[11].b(false)) until they are unlocked. Original: cs.j[10], cs.j[11]. */
+        /** These two tower indices are hidden (j[10].b(false), j[11].b(false)) until they are unlocked. They are the
+         * last two buttons in both orders, so the map above leaves them at 9 and 10. Original: cs.j[10], cs.j[11]. */
         private static final int TRACKING = 9;
         private static final int MISSILE = 10;
 

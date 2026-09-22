@@ -14,6 +14,20 @@ so any line here can be traced back to the decompiled source.
 Everything the original had is here: **19 levels**, **11 towers**, **39 enemy types**, the main menu, level
 select, instructions, options, high scores, the pause menu, and the cheat code.
 
+## Preservation project
+
+This is a non-commercial preservation of an obscure 2010 Symbian game that would otherwise be lost. The original 
+was free-to-play, created by hobbyists, and is no longer playable on modern devices. This port exists to:
+
+- Make the game playable again for those who remember it
+- Preserve a piece of mobile gaming history
+- Credit the original authors properly
+
+No monetization. No ads. No in-app purchases. Just the game as it was, running on Android.
+
+If you're Johan Krüger, Zuul, or anyone involved with the original — I'd love to hear from you 
+(metalarchus@gmail.com). This exists because your work deserves to be remembered.
+
 ## Screenshots
 
 Cropped to the original 360×640 design space at 2×, which is what the `Screen` view draws before scaling it to
@@ -68,15 +82,11 @@ time the screen opens, and the cheat resets when the app restarts.
 ## Build
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk   # AGP 8.2 rejects JDK 8
-export ANDROID_HOME=/opt/android-sdk
+cd /path/to/amazingtd5800
+export JAVA_HOME=path/to/java (optional)
+export ANDROID_HOME=pat/to/adroid_sdk (optional)
 ./gradlew assembleDebug
 ```
-
-The APK lands in `app/build/outputs/apk/debug/app-debug.apk`. `minSdk 24`, `compileSdk`/`targetSdk 34`,
-Java 17. `assembleRelease` needs network (the `lint-gradle` artifact is not in the local Gradle cache, so
-`--offline` fails for it); `release` is debug-signed and un-minified. There are no unit or instrumentation
-tests — the port is verified by building it and comparing pixels and taps against the original jar on an emulator.
 
 ## Layout
 
@@ -88,13 +98,13 @@ icon/                                launcher icon SVG sources
 ```
 
 Save data keeps the original's RMS record stores as private files in `getFilesDir()`, same names, same binary
-format: `ATDsettings`, `clearedLevelsEasy`, `clearedLevels`, `clearedLevelsHard`. Difficulty switching deletes
-the old store, as it did on the phone.
+format: `ATDsettings`, `clearedLevelsEasy`, `clearedLevels`, `clearedLevelsHard`. Each difficulty has its own store and
+switching difficulty only reopens the one it needs, so the other difficulties keep their progress.
 
 ## Credits
 
-This is a fan port of someone else's game, and almost none of the content here is mine. The same credits are
-shown in-game on the **About** screen:
+This is a preservation port of a 2010 Symbian game that would otherwise be lost to time, and almost none of the content here
+is mine. The same credits are shown in-game on the **About** screen:
 
 | Role | Who |
 |------|-----|

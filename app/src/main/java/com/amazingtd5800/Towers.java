@@ -57,7 +57,7 @@ final class Towers {
             range = (int) (range * 1.08);
             speed += 0.007f;
             flight = (int) (range / speed);
-            paid(hud, 1.5f);
+            paid(hud, 1.5);
             reloadBar(1000 + (1 + level) * 500);
             return true;
         }
@@ -106,10 +106,10 @@ final class Towers {
             damage += 2;
             reloadFull -= 25;
             range = (int) (range * 1.1);
-            speed *= 1.05f;
+            speed = (float) ((double) speed * 1.05);
             chance += 0.05f;
             slowFor += 500L;
-            paid(hud, 1.2f);
+            paid(hud, 1.2);
             reloadBar(1000 + (1 + level) * 700);
             return true;
         }
@@ -134,8 +134,10 @@ final class Towers {
 
         @Override
         void shoot(Vec2 aim, Enemy enemy) {
-            float distance = aim.length();
-            Vec2 velocity = aim.copy();
+            // fc lead-corrects first (object = this.b(object, w2)) and times the shell off the length of the
+            // corrected vector, so the lead (e = 0.3) is used and the flight counts from the predicted point.
+            Vec2 velocity = aimAt(aim, enemy);
+            float distance = velocity.length();
             velocity.normalize();
             velocity.scale(speed);
             Projectile.Shell shell = new Projectile.Shell(position().copy(), velocity, (int) (distance / velocity.length()), damage,
@@ -156,7 +158,7 @@ final class Towers {
             range = (int) (range * 1.05);
             damage += new int[]{1, 1, 2, 3, 3, 4, 2}[level];
             splash += 1;
-            paid(hud, 1.35f);
+            paid(hud, 1.35);
             reloadBar(1000 + (1 + level) * 900);
             return true;
         }
@@ -216,12 +218,12 @@ final class Towers {
             }
             reloadFull -= 20 + 2 * level;
             burst -= 100 + level * 10;
-            speed *= 1.05f;
+            speed = (float) ((double) speed * 1.05);
             if (level % 2 == 0) {
                 range = (int) (range * 1.07);
             }
             damage += new int[]{2, 2, 2, 3, 4, 3, 5}[level];
-            paid(hud, 1.4f);
+            paid(hud, 1.4);
             reloadBar(1000 + (1 + level) * 600);
             return true;
         }
@@ -309,7 +311,7 @@ final class Towers {
             reloadFull -= 160 + level * 10;
             range = (int) (range * 1.05);
             damage += new int[]{4, 8, 0, 8, 4, 10, 14}[level];
-            paid(hud, 1.36f);
+            paid(hud, 1.36);
             reloadBar(1000 + (1 + level) * 1000);
             return true;
         }
@@ -401,13 +403,13 @@ final class Towers {
                 return false;
             }
             reloadFull -= 100;
-            speed *= 1.05f;
+            speed = (float) ((double) speed * 1.05);
             range = (int) (range * 1.08);
             if (level == 3 || level == 6) {
                 amount++;
             }
             time += 400;
-            paid(hud, 1.2f);
+            paid(hud, 1.2);
             reloadBar(1000 + (1 + level) * 600);
             return true;
         }
@@ -447,7 +449,9 @@ final class Towers {
                 Vec2 velocity = aimAt(aim, enemy);
                 velocity.normalize();
                 velocity.scale(speed);
-                Projectile.SniperShot shot = new Projectile.SniperShot(position().copy(), velocity, enemy.position().copy(), damage,
+                // pa passes the enemy's own live vector (w2.a()) to rm, which re-aims at it every tick; a copy would
+                // freeze the target point.
+                Projectile.SniperShot shot = new Projectile.SniperShot(position().copy(), velocity, enemy.position(), damage,
                         (int) (range / speed));
                 shot.setIgnoresShield(true);
                 projectiles.add(shot);
@@ -467,9 +471,9 @@ final class Towers {
             }
             reloadFull -= 100;
             range += 3;
-            lead += 0.02f;
+            lead = (float) ((double) lead + 0.02);
             damage += new int[]{10, 13, 19, 26, 36, 50, 71}[level];
-            paid(hud, 1.4f);
+            paid(hud, 1.4);
             reloadBar(1000 + (1 + level) * 1000);
             if (level >= 7) {
                 targets = 2;
@@ -541,7 +545,8 @@ final class Towers {
             reloadFull -= new int[]{18, 22, 26, 32, 35, 37, 38}[level];
             range = (int) (range * 1.08);
             damage++;
-            paid(hud, 1.3f);
+            // nu is the only tower that adds after multiplying: k = (int)(k * 1.3) + 1.
+            paid(hud, 1.3, 1);
             reloadBar(1000 + (1 + level) * 1100);
             return true;
         }
@@ -596,9 +601,9 @@ final class Towers {
                 return false;
             }
             reloadFull -= 100;
-            lead += 0.02f;
+            lead = (float) ((double) lead + 0.02);
             damage += new int[]{1, 2, 3, 3, 5, 6, 8}[level];
-            paid(hud, 1.4f);
+            paid(hud, 1.4);
             flight = (int) (range / speed);
             reloadBar(1000 + (1 + level) * 1000);
             return true;
@@ -727,9 +732,9 @@ final class Towers {
             if (payer) {
                 hud.spend(upgradePrice);
             }
-            upgradePrice = (int) (upgradePrice * 1.5f);
+            upgradePrice = (int) ((double) upgradePrice * 1.5);
             levelUp();
-            reloadBar(1000 + (1 + level) * 1100);
+            reloadBar(1000 + (1 + level) * 2000);
             return true;
         }
     }
