@@ -29,3 +29,7 @@ hs_err_pid*.log
 
 # Keep: gradle/wrapper/ (jar + properties), app/src/main/assets (fonts, images, sounds),
 # icon/ (launcher icon SVG sources).
+
+# Signing
+*.keystore
+keystore.properties
