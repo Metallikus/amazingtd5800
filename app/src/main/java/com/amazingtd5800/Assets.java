@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class Assets {
 
-    private static final String TAG = "AMazingTD";
+    private static final String TAG = "Amazing TD";
 
     private static Assets instance;
 

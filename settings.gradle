@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AMazingTD5800"
+rootProject.name = "AmazingTD5800"
 include ':app'

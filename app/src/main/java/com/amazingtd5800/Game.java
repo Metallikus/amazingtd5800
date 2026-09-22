@@ -127,7 +127,7 @@ public final class Game {
         activity.finish();
     }
 
-    /** Version name, taken from the MIDlet-Version of the original manifest. Original: AMazingTDMidlet.a. */
+    /** Version name, taken from the MIDlet-Version of the original manifest. Original: AmazingTDMidlet.a. */
     public String version() {
         if (version == null) {
             try {

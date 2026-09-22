@@ -15,7 +15,7 @@ import android.util.Log;
  */
 final class Sounds {
 
-    private static final String TAG = "AMazingTD";
+    private static final String TAG = "Amazing TD";
     /** Load order matches the order of the original's fields. Original: ru.d..n. */
     private static final String[] SOUNDS = {"fireArrow", "fireBullet", "fireLaser", "forceField", "bombExplosion",
             "fireSniper", "fireDetector", "fireSlow", "fireMoney", "fireTracking", "coinBonus"};

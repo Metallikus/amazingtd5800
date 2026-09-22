@@ -3,8 +3,8 @@ package com.amazingtd5800;
 import android.app.Activity;
 import android.os.Bundle;
 
-/** Application entry point and lifecycle. Original: AMazingTDMidlet. */
-public class AMazingTDActivity extends Activity {
+/** Application entry point and lifecycle. Original: AmazingTDMidlet. */
+public class AmazingTDActivity extends Activity {
 
     private final Game game = new Game(this);
 

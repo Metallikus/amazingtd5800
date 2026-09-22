@@ -285,7 +285,7 @@ abstract class Level implements Enemy.EnemyListener {
         }
     }
 
-    /** An enemy died: score, reward and, one time in five, a coin (AMazingTDMidlet.a(5) == 1). Original: ca.a(w). */
+    /** An enemy died: score, reward and, one time in five, a coin (AmazingTDMidlet.a(5) == 1). Original: ca.a(w). */
     @Override
     public void killed(Enemy enemy) {
         hud.enemyKilled(enemy);
