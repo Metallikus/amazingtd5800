@@ -1,7 +1,7 @@
-# AMazingTD — Amazing TD for Android
+# AmazingTD — Amazing TD for Android
 
 A remake of **Amazing TD** — a free-to-play J2ME tower-defense game created by **Johan Krüger in 2010** for the
-Nokia 5800 XpressMusic (the jar's manifest: `MIDlet-Name: AMazingTD`, `MIDlet-Vendor: Johan Kruger`,
+Nokia 5800 XpressMusic (the jar's manifest: `MIDlet-Name: AmazingTD`, `MIDlet-Vendor: Johan Kruger`,
 `MIDlet-Version: 0.99.33`) — as a normal Android app. I made it because my wife really loved that game, and
 there is no way left to play it.
 
